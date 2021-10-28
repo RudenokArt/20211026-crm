@@ -1,4 +1,5 @@
 <?php get_header();?>
+<?php $current_user = wp_get_current_user(); ?>
 
 <?php if (is_user_logged_in()): ?>
 	<?php include_once 'layout/main.php';?>
