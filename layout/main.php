@@ -1,14 +1,15 @@
+<?php if (!isset($_GET['main_page'])){
+	$_GET['main_page'] = 'orders';
+} ?>
+
 <div class="container wrapper-top">
 	<div class="row row justify-content-end">
 		<?php if ($current_user->ID==1): ?>
 			<div class="col-10">
 				<ul class="nav nav-tabs">
 					<li class="nav-item">
-						<?php if (!isset($_GET['main_page'])){
-							$_GET['main_page'] = 'orders';
-						} ?>
 						<a
- 						<?php if ($_GET['main_page']=='orders'	or $_GET['main_page']==''): ?>
+						<?php if ($_GET['main_page']=='orders'	or $_GET['main_page']==''): ?>
 							class="nav-link active"
 						<?php else: ?>
 							class="nav-link"
@@ -48,9 +49,8 @@
 <div class="wrapper-top">
 	<div class="container">
 		<div class="row">
-				<?php include_once 'main_'.$_GET['main_page'].'.php'; ?>
+			<?php include_once 'main_'.$_GET['main_page'].'.php'; ?>
 		</div>
 	</div>
 </div>
 
-<pre><?php print_r(get_users()) ?></pre>
