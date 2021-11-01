@@ -5,14 +5,16 @@
 		</p>
 		<form action="" method="post">
 			<div class="mb-3">
-				<select class="form-select form-control" name="user_role" >
-					<option value="editor">
-						<?php echo $users_roles['editor'] ?>
-					</option>
-					<option value="author">
-						<?php echo $users_roles['author'] ?>
-					</option>
-				</select>
+				<div class="input-group">
+					<select class="form-select" name="user_role" >
+						<option value="editor">
+							<?php echo $users_roles['editor'] ?>
+						</option>
+						<option value="author">
+							<?php echo $users_roles['author'] ?>
+						</option>
+					</select>
+				</div>
 			</div>
 			<div class="mb-3">
 				<label for="exampleInputLogin" class="form-label">
@@ -47,4 +49,3 @@
 		</a>
 	</form>
 </div>
-

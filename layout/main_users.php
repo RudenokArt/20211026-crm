@@ -23,19 +23,21 @@
 				<?php echo $users_roles[$value->roles[0]]; ?>
 			</div>
 			<div class="col-lg-3 col-md-4 col-sm-6">
-				<button class="btn btn-outline-info" title="редактировать">
-					<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-				</button>
-				<?php if ($value->data->ID !=1): ?>
-					<a href="?main_page=delete&entity=user&id=<?php echo $value->data->ID; ?>">
-						<button  class="btn btn-outline-danger" title="удалить">
-							<i class="fa fa-trash-o" aria-hidden="true"></i>
-						</button>
-					</a>
-				<?php endif ?>
+				<a href="?main_page=user_update&id=<?php echo $value->data->ID;?>">
+					<button class="btn btn-outline-info" title="редактировать">
+						<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+					</button></a>
+					<?php if ($value->data->ID !=1): ?>
+						<a 
+						href="?main_page=delete&entity=user&id=<?php echo $value->data->ID;?>">
+							<button  class="btn btn-outline-danger" title="удалить">
+								<i class="fa fa-trash-o" aria-hidden="true"></i>
+							</button>
+						</a>
+					<?php endif ?>
+				</div>
 			</div>
-		</div>
-		<hr>
-	<?php endforeach ?>
-</div>
+			<hr>
+		<?php endforeach ?>
+	</div>
 

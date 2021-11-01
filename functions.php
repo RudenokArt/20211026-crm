@@ -15,7 +15,30 @@ if (isset($_POST['user_delete'])) {
 	user_delete();
 }
 
+if (isset($_POST['user_update'])) {
+	user_update();
+}
+
 // ===== FUNCTIONS =====
+
+function user_update () {
+	if ($_POST['user_password']=='') {
+		$message = 'Не указан пароль!';
+	} else {
+		wp_update_user( [
+			'ID' => $_POST['user_update'],
+			'user_pass'=>$_POST['user_password'],
+			'user_email' => $_POST['user_email'],
+			'display_name' => $_POST['user_name'],
+			'first_name' => $_POST['user_name'],
+			'role'  => $_POST['user_role'], 
+		] );
+		wp_set_password($_POST['user_password'], $_POST['user_update']);
+		$message = 'Изменения внесены в базу данных';
+	}
+	include_once 'layout/result_message.php';
+	post_resset('?main_page=users');
+}
 
 function user_delete () {
 	require_once ABSPATH . 'wp-admin/includes/user.php'; 
