@@ -19,7 +19,58 @@ if (isset($_POST['user_update'])) {
 	user_update();
 }
 
+if (isset($_POST['order_add'])) {
+	order_add();
+}
+
 // ===== FUNCTIONS =====
+
+function order_fields ($order) {
+	$arr = [];
+	foreach (get_post_meta($order) as $key => $value) {
+		$arr[$key] = $value[0];
+	}
+	return $arr;
+}
+
+function orders_list () {
+	return get_posts();
+}
+
+function order_add () {
+	// создание поста
+	$post_data = [
+		'post_title'    => $_POST['company_adress'],
+		'post_content'  => $_POST['comment'],
+		'post_status'   => 'publish',
+		'post_author'   => get_current_user_id(),
+		'meta_input'    => [ 
+			'order_date'=>$_POST['order_date'],
+			'customer_phone'=>$_POST['customer_phone'],
+			'customer_adress'=>$_POST['customer_adress'],
+			'order_status'=>$_POST['order_status'],
+		],
+	];
+	$post_id = wp_insert_post( wp_slash($post_data) );
+	// загрузка файла
+	$file = $_FILES['upload_file']['tmp_name'];
+	$name = $_FILES['upload_file']['name'];
+	$link = '/wp-content/uploads/order_'.$post_id.'_'.$name;
+	move_uploaded_file($file, $_SERVER['DOCUMENT_ROOT'].$link);
+	// метаполе ссылка на файл
+	$new_post_data = [
+		'ID' => $post_id,
+		'meta_input' => [
+			'file' => $link,
+		],
+	];
+	if ($_FILES['upload_file']['size']>0) {
+		wp_update_post( wp_slash($new_post_data) );
+	}
+	$message = 'Заказ добавлен в базу!';
+	include_once 'layout/result_message.php';
+	post_resset('?main_page=orders');
+}
 
 function user_update () {
 	if ($_POST['user_password']=='') {

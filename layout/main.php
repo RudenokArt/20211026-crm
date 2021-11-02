@@ -48,9 +48,7 @@
 
 <div class="wrapper-top">
 	<div class="container">
-		<div class="row">
 			<?php include_once 'main_'.$_GET['main_page'].'.php'; ?>
-		</div>
 	</div>
 </div>
 
