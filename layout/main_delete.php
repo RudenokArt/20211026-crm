@@ -16,13 +16,15 @@
 					<div class="row justify-content-around">
 						<div class="col-3">
 							<form action="" method="post">
-								<button name="user_delete" value="<?php echo $_GET['id'] ?>" 
+								<button name="<?php echo $_GET['entity'];?>_delete" 
+								value="<?php echo $_GET['id'] ?>" 
 									class="btn btn-outline-success" title="Удалить">
 									<i class="fa fa-check" aria-hidden="true"></i>
 								</button>
 							</form>
 						</div><div class="col-3">
-							<a href="?main_page=users" class="btn btn-outline-danger">
+							<a href="?main_page=<?php echo $_GET['entity'];?>" 
+								class="btn btn-outline-danger">
 								<i class="fa fa-times" aria-hidden="true"></i>
 							</a>
 						</div>

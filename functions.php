@@ -11,7 +11,7 @@ if (isset($_POST['new_user_add'])) {
 	new_user_add();
 }
 
-if (isset($_POST['user_delete'])) {
+if (isset($_POST['users_delete'])) {
 	user_delete();
 }
 
@@ -23,7 +23,18 @@ if (isset($_POST['order_add'])) {
 	order_add();
 }
 
+if (isset($_POST['orders_delete'])) {
+	order_delete();
+}
+
 // ===== FUNCTIONS =====
+
+function order_delete () {
+	wp_delete_post($_POST['orders_delete']);
+	$message = 'Заказ удален из базы дынных!';
+	include_once 'layout/result_message.php';
+	post_resset('?main_page=orders');
+}
 
 function order_fields ($order) {
 	$arr = [];
@@ -93,7 +104,7 @@ function user_update () {
 
 function user_delete () {
 	require_once ABSPATH . 'wp-admin/includes/user.php'; 
-	wp_delete_user($_POST['user_delete']);
+	wp_delete_user($_POST['users_delete']);
 	$message = 'Профиль пользователя удален из базы дынных!';
 	include_once 'layout/result_message.php';
 	post_resset('?main_page=users');

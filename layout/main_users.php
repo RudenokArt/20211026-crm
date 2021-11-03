@@ -29,7 +29,7 @@
 					</button></a>
 					<?php if ($value->data->ID !=1): ?>
 						<a 
-						href="?main_page=delete&entity=user&id=<?php echo $value->data->ID;?>">
+						href="?main_page=delete&entity=users&id=<?php echo $value->data->ID;?>">
 							<button  class="btn btn-outline-danger" title="удалить">
 								<i class="fa fa-trash-o" aria-hidden="true"></i>
 							</button>
