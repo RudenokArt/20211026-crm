@@ -27,10 +27,48 @@ if (isset($_POST['orders_delete'])) {
 	order_delete();
 }
 
+if (isset($_POST['order_update'])) {
+	order_update ();
+}
+
+
+
 // ===== FUNCTIONS =====
+
+function order_update () {
+	$new_post_data = [
+		'ID' => $_POST['order_update'],
+		'post_title'    => $_POST['company_adress'],
+		'post_status'   => 'publish',
+		'post_content' => $_POST['comment'],
+		'meta_input'  => [ 
+			'order_date'=>$_POST['order_date'],
+			'customer_phone'=>$_POST['customer_phone'],
+			'customer_adress'=>$_POST['customer_adress'],
+			'order_status'=>$_POST['order_status'],
+		],
+	];
+	wp_update_post( wp_slash($new_post_data) );
+	if ($_FILES['upload_file']['size']>0) {
+		unlink($_SERVER['DOCUMENT_ROOT'].$_POST['unliking_file']);
+	}
+	user_file_upload ($_POST['order_update']);
+	$message = 'Изменения внесены в базу данных!';
+	include_once 'layout/result_message.php';
+	post_resset('?main_page=orders');
+}
+
+function post_data ($order_id) {
+	$arr = [];
+	$arr['data'] = get_post($order_id);
+	$arr['meta'] = get_post_meta($order_id);
+	return $arr;
+}
 
 function order_delete () {
 	wp_delete_post($_POST['orders_delete']);
+	unlink($_SERVER['DOCUMENT_ROOT'].post_data(
+		$_POST['orders_delete'])['meta']['file'][0]);
 	$message = 'Заказ удален из базы дынных!';
 	include_once 'layout/result_message.php';
 	post_resset('?main_page=orders');
@@ -63,6 +101,14 @@ function order_add () {
 		],
 	];
 	$post_id = wp_insert_post( wp_slash($post_data) );
+	user_file_upload ($post_id);
+	$message = 'Заказ добавлен в базу!';
+	include_once 'layout/result_message.php';
+	post_resset('?main_page=orders');
+}
+
+function user_file_upload ($post_id) {
+	if ($_FILES['upload_file']['size']>0) {
 	// загрузка файла
 	$file = $_FILES['upload_file']['tmp_name'];
 	$name = $_FILES['upload_file']['name'];
@@ -75,12 +121,8 @@ function order_add () {
 			'file' => $link,
 		],
 	];
-	if ($_FILES['upload_file']['size']>0) {
 		wp_update_post( wp_slash($new_post_data) );
 	}
-	$message = 'Заказ добавлен в базу!';
-	include_once 'layout/result_message.php';
-	post_resset('?main_page=orders');
 }
 
 function user_update () {

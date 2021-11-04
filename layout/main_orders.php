@@ -37,7 +37,7 @@
 			<?php echo $value->post_content; ?>
 		</div>
 		<div  class="col-lg-2 col-md-6 col-sm-12">
-			<a href=""
+			<a href="?main_page=order_update&id=<?php echo $value->ID;?>"
 				class="btn btn-outline-info">
 				<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
 			</a>
