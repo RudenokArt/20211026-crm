@@ -1,4 +1,6 @@
 <?php 
+require_once ABSPATH . 'wp-admin/includes/user.php'; 
+require_once( ABSPATH . '/wp-admin/includes/taxonomy.php');
 
 if (isset($_POST['login_form_send'])) { user_login();}
 
@@ -83,15 +85,21 @@ function order_fields ($order) {
 }
 
 function orders_list () {
-	return get_posts();
+	return get_posts(['category' => get_cat_ID('order')]);
 }
 
 function order_add () {
 	// создание поста
+	if (get_cat_ID('order')) {
+		$category = get_cat_ID('order');
+	} else {
+		$category = wp_create_category('order');
+	}
 	$post_data = [
 		'post_title'    => $_POST['company_adress'],
 		'post_content'  => $_POST['comment'],
 		'post_status'   => 'publish',
+		'post_category' => [$category],
 		'post_author'   => get_current_user_id(),
 		'meta_input'    => [ 
 			'order_date'=>$_POST['order_date'],
@@ -112,7 +120,9 @@ function user_file_upload ($post_id) {
 	// загрузка файла
 	$file = $_FILES['upload_file']['tmp_name'];
 	$name = $_FILES['upload_file']['name'];
+	$link1 = '/crm/wp-content/uploads/order_'.$post_id.'_'.$name;
 	$link = '/wp-content/uploads/order_'.$post_id.'_'.$name;
+	if ($link1) {		$link = $link1;	}
 	move_uploaded_file($file, $_SERVER['DOCUMENT_ROOT'].$link);
 	// метаполе ссылка на файл
 	$new_post_data = [
@@ -145,7 +155,6 @@ function user_update () {
 }
 
 function user_delete () {
-	require_once ABSPATH . 'wp-admin/includes/user.php'; 
 	wp_delete_user($_POST['users_delete']);
 	$message = 'Профиль пользователя удален из базы дынных!';
 	include_once 'layout/result_message.php';

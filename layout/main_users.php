@@ -14,7 +14,7 @@
 	<?php foreach (get_users() as $key => $value): ?>
 		<div class="row">
 			<div class="col-lg-3 col-md-4 col-sm-6">
-				<?php echo $value->data->display_name; ?>
+				<?php echo get_user_meta($value->data->ID,'first_name',true); ?>
 			</div>
 			<div class="col-lg-3 col-md-4 col-sm-6">
 				<?php echo $value->data->user_login; ?>
@@ -40,4 +40,3 @@
 			<hr>
 		<?php endforeach ?>
 	</div>
-

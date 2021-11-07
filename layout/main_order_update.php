@@ -77,5 +77,3 @@
 </div>
 </div>
 
-<pre>	<?php print_r(post_data($_GET['id'])); ?> </pre>
-
