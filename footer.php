@@ -1,7 +1,7 @@
 <script>
 
 	$( function() {
-		$('input[name="order_date"]').datepicker({
+		$('input[name="order_date"], .drop_calendar').datepicker({
 			  dateFormat: "dd-mm-yy"
 		});
 	} );

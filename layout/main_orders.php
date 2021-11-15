@@ -1,19 +1,28 @@
 
 <div class="row justify-content-center">
-	<div class="col">
-		<a href="?main_page=order_add">
-			<button class="btn btn-outline-info">
-				<i class="fa fa-plus-circle" aria-hidden="true"></i>
-				Добавить заказ
-			</button>
+	<div class="col-lg-4 col-md-6 col-sm-12 pt-2">
+		<a href="?main_page=order_add" class="btn btn-outline-info">
+			<i class="fa fa-plus-circle" aria-hidden="true"></i>
+			Добавить заказ
 		</a>
+	</div>
+	<div class="col-lg-4 col-md-6 col-sm-12 pt-2">
+		<a href="?main_page=orders_filter" class="btn btn-outline-info">
+			<i class="fa fa-filter" aria-hidden="true"></i>
+			Фильтр
+		</a>
+		<?php if (isset($_POST['orders_filter'])): ?>
+			<a href="?main_page=orders" class="btn btn-outline-info">
+				<i class="fa fa-times" aria-hidden="true"></i>
+				Сброс
+			</a>
+		<?php endif ?>
 	</div>
 </div>
 <br>
 
-
 <?php foreach (orders_list() as $key => $value): ?>
-		<?php $order_meta_fields = order_fields($value->ID) ?>
+	<?php $order_meta_fields = order_fields($value->ID) ?>
 	<div class="row">
 		<div class="col-lg-3 col-md-6 col-sm-12">
 			<?php echo get_user_by('ID',$value->post_author)->data->display_name;?>
@@ -42,10 +51,13 @@
 				<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
 			</a>
 			<a href="?main_page=delete&entity=orders&id=<?php echo $value->ID;?>"
-			class="btn btn-outline-danger">
+				class="btn btn-outline-danger">
 				<i class="fa fa-trash-o" aria-hidden="true"></i>
 			</a>
 		</div>
 	</div>
 	<hr>
 <?php endforeach ?>
+
+
+

@@ -1,4 +1,5 @@
 <?php 
+include_once 'debugger.php';
 require_once ABSPATH . 'wp-admin/includes/user.php'; 
 require_once( ABSPATH . '/wp-admin/includes/taxonomy.php');
 
@@ -85,7 +86,55 @@ function order_fields ($order) {
 }
 
 function orders_list () {
-	return get_posts(['category' => get_cat_ID('order')]);
+	$arr = get_posts(['category' => get_cat_ID('order')]);
+	$arr = orders_filter($arr);
+	return $arr;
+}
+
+function orders_filter($arr) {
+	if (isset($_POST['orders_filter'])) {
+		foreach ($arr as $key => $value) {
+			if (!empty($_POST['order_date_for'])) {
+				if (
+					strtotime(order_fields($value->ID)['order_date']) 
+					< strtotime($_POST['order_date_for'])) {
+					unset($arr[$key]);
+				}
+			}
+			if (!empty($_POST['order_date_to'])) {
+				if (
+					strtotime(order_fields($value->ID)['order_date']) 
+					> strtotime($_POST['order_date_to'])) {
+					unset($arr[$key]);
+				}
+			}
+			if (!empty($_POST['order_comment'])) {
+				if (mb_stripos($value->post_content,trim($_POST['order_comment']))===false) {
+					unset($arr[$key]);
+				}
+			}
+			if (!empty($_POST['customer_phone_filter'])) {
+				if (
+					mb_stripos(order_fields($value->ID)['customer_phone'],
+						trim($_POST['customer_phone_filter']))===false) {
+					unset($arr[$key]);
+				}
+			}
+			if (!empty($_POST['customer_adress'])) {
+				if (
+					mb_stripos(order_fields($value->ID)['customer_adress'],
+						trim($_POST['customer_adress']))===false) {
+					unset($arr[$key]);
+				}
+			}
+			if (!empty($_POST['company_adress'])) {
+				if ($value->post_title != $_POST['company_adress']) {
+					unset($arr[$key]);
+				}
+			}
+		}
+	}
+	return $arr;
 }
 
 function order_add () {
@@ -118,19 +167,19 @@ function order_add () {
 function user_file_upload ($post_id) {
 	if ($_FILES['upload_file']['size']>0) {
 	// загрузка файла
-	$file = $_FILES['upload_file']['tmp_name'];
-	$name = $_FILES['upload_file']['name'];
-	$link1 = '/crm/wp-content/uploads/order_'.$post_id.'_'.$name;
-	$link = '/wp-content/uploads/order_'.$post_id.'_'.$name;
-	if ($link1) {		$link = $link1;	}
-	move_uploaded_file($file, $_SERVER['DOCUMENT_ROOT'].$link);
+		$file = $_FILES['upload_file']['tmp_name'];
+		$name = $_FILES['upload_file']['name'];
+		$link1 = '/crm/wp-content/uploads/order_'.$post_id.'_'.$name;
+		$link = '/wp-content/uploads/order_'.$post_id.'_'.$name;
+		if ($link1) {		$link = $link1;	}
+		move_uploaded_file($file, $_SERVER['DOCUMENT_ROOT'].$link);
 	// метаполе ссылка на файл
-	$new_post_data = [
-		'ID' => $post_id,
-		'meta_input' => [
-			'file' => $link,
-		],
-	];
+		$new_post_data = [
+			'ID' => $post_id,
+			'meta_input' => [
+				'file' => $link,
+			],
+		];
 		wp_update_post( wp_slash($new_post_data) );
 	}
 }
@@ -198,22 +247,21 @@ function user_login () {
 	post_resset();
 }
 
-function post_resset ($page='') {	?>
+function post_resset ($page='') {	?> 
 	<script>
 		setTimeout(function () {
 			document.location.href="index.php?<?php echo $page; ?>";
 		}, 2000);
 	</script>
-	<div style="display:none;">
-	<?php }
+	<div style="display:none;">			<?php 
+}
 
-
-	function admin_only () {?>
-		<?php if ($current_user->ID==1): ?>
-			<?php $message = 'Этот раздел доступен только для администратора!' ?>
-			<?php include_once 'layout/result_message.php'; ?>
-			<?php exit(); ?>
-		<?php endif ?>
-	<?php }
+function admin_only () {?>
+	<?php if ($current_user->ID==1): ?>
+		<?php $message = 'Этот раздел доступен только для администратора!' ?>
+		<?php include_once 'layout/result_message.php'; ?>
+		<?php exit(); ?>
+	<?php endif ?><?php 
+}
 
 
