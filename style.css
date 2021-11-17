@@ -10,3 +10,7 @@
 div, button{
   font-size: 14px !important;
 }
+
+.pagination_manager{
+  width: 200px !important;
+}

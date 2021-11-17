@@ -36,6 +36,7 @@ if (isset($_POST['order_update'])) {
 
 
 
+
 // ===== FUNCTIONS =====
 
 function order_update () {
@@ -88,7 +89,52 @@ function order_fields ($order) {
 function orders_list () {
 	$arr = get_posts(['category' => get_cat_ID('order')]);
 	$arr = orders_filter($arr);
+	$arr = pagination_manager($arr);
 	return $arr;
+}
+
+function set_quantity_per_page () {
+	if (isset($_POST['pagination_manager'])) {
+		$_SESSION['pagination_manager'] = $_POST['pagination_manager'];
+		
+	} 
+}
+
+function get_quantity_per_page () {
+	if (isset($_SESSION['pagination_manager'])) {
+		$quantity = $_SESSION['pagination_manager'];
+	} else {
+		$quantity = 10;
+	}
+	return $quantity;
+}
+
+function  pagination_manager($arr) {
+	$quantity = count($arr);
+	if (isset($_POST['page_number'])) {
+		$current_page = $_POST['page_number'];
+	} else {
+		$current_page = 1;
+	}
+	$quantity_per_page = get_quantity_per_page();
+	if ($quantity_per_page > $quantity) {
+		$quantity_per_page = $quantity;
+	}
+	$number_of_pages = ceil(count($arr) / $quantity_per_page);
+	$last_order = $current_page * $quantity_per_page;	
+	$first_order = $last_order - $quantity_per_page;
+	if ($last_order > $quantity) {
+		$last_order = $quantity;
+	}
+	echo '==='.$last_order;
+	$page = [];
+	for ($i=$first_order; $i < $last_order ; $i++) { 
+		array_push($page, $arr[$i]);
+	}
+	return [
+		'page' => $page, 
+		'number_of_pages' => $number_of_pages
+	];
 }
 
 function orders_filter($arr) {
@@ -134,7 +180,11 @@ function orders_filter($arr) {
 			}
 		}
 	}
-	return $arr;
+	$list = [];
+	foreach ($arr as $key => $value) {
+		array_push($list, $value);
+	}
+	return $list;
 }
 
 function order_add () {
