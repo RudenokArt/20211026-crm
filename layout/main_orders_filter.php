@@ -2,8 +2,11 @@
 <form action="?main_page=orders" method="post">
 	<div class="row justify-content-center pb-2">
 		<div class="col-lg-4 col-md-6 col-sm-12">
+			<p class="h3">
+				Поиск заказов:
+			</p>
 			<select class="form-select" name="company_adress">
-					<option value="">Пункт (не выбран)</option>
+				<option value="">Пункт (не выбран)</option>
 				<?php foreach ($adress_arr as $key => $value): ?>
 					<option value="<?php echo $key; ?>">
 						<?php echo $value; ?>

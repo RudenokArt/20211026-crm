@@ -1,5 +1,8 @@
 <?php set_quantity_per_page(); ?>
 <?php $page_data = orders_list() ?>
+<?php if (isset($_POST['page_number'])) {
+	$current_page = $_POST['page_number'];
+} else { $current_page = 1;}?>
 
 <div class="row justify-content-center">
 	<div class="col-lg-4 col-md-6 col-sm-12 pt-2">
@@ -9,14 +12,12 @@
 		</a>
 	</div>
 	<div class="col-lg-4 col-md-6 col-sm-12 pt-2">
-		<a href="?main_page=orders_filter" class="btn btn-outline-info">
-			<i class="fa fa-filter" aria-hidden="true"></i>
-			Фильтр
+		<a href="?main_page=orders_filter" class="btn btn-outline-info" title="Поиск">
+			<i class="fa fa-search" aria-hidden="true"></i>
 		</a>
-		<?php if (isset($_POST['orders_filter'])): ?>
-			<a href="?main_page=orders" class="btn btn-outline-info">
+		<?php if (isset($_POST['orders_filter']) and $_POST['orders_filter']=='true'): ?>
+			<a href="?main_page=orders" class="btn btn-outline-info" title="Сброс">
 				<i class="fa fa-times" aria-hidden="true"></i>
-				Сброс
 			</a>
 		<?php endif ?>
 	</div>
@@ -38,34 +39,46 @@
 	</div>
 </div>
 <br>
-
-<?php echo $page_data['number_of_pages'] ?>
 <div>
 	<ul class="pagination">
-		<?php for ($i=1; $i<=$page_data['number_of_pages']; $i++): ?>
-			<li class="page-item <?php if ($i==$_POST['page_number']): ?>
-				active
-			<?php endif ?>">
+		<?php if ($_POST['page_number'] > 1): ?>
+			<li class="page-item">
 				<form action="" method="post">
 					<?php include 'main_orders_pagination_filter.php'; ?>
-					<button class="page-link" name="page_number" value="<?php echo $i; ?>">
-						<?php echo $i; ?>
-					</button>
-				</form>
-			</li>
-		<?php endfor; ?>
-		<li class="page-item disabled">
-			<a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+					<button class="page-link" name="page_number" 
+					value="<?php echo $current_page-1; ?>">
+					<i class="fa fa-chevron-left" aria-hidden="true"></i>
+				</button>
+			</form>
 		</li>
-		<li class="page-item"><a class="page-link" href="#">1</a></li>
-		<li class="page-item active" aria-current="page">
-			<a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
+	<?php endif ?>
+	<?php for ($i=first_page($current_page); 
+		$i<=last_page($current_page, $page_data['number_of_pages']); 
+		$i++): ?>
+		<li class="page-item 
+		<?php if ($i==$current_page): ?>
+			active
+			<?php endif ?>"> 
+			<form action="" method="post">
+				<?php include 'main_orders_pagination_filter.php'; ?>
+				<button class="page-link" name="page_number" value="<?php echo $i; ?>">
+					<?php echo $i; ?>
+				</button>
+			</form>
 		</li>
-		<li class="page-item"><a class="page-link" href="#">3</a></li>
+	<?php endfor; ?>
+	<?php if ($current_page < $page_data['number_of_pages']): ?>
 		<li class="page-item">
-			<a class="page-link" href="#">Next</a>
-		</li>
-	</ul>
+			<form action="" method="post">
+				<?php include 'main_orders_pagination_filter.php'; ?>
+				<button class="page-link" name="page_number" 
+				value="<?php echo $current_page+1; ?>">
+				<i class="fa fa-chevron-right" aria-hidden="true"></i>
+			</button>
+		</form>
+	</li>
+<?php endif ?>
+</ul>
 </div>
 
 

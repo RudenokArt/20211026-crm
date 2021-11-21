@@ -34,10 +34,43 @@ if (isset($_POST['order_update'])) {
 	order_update ();
 }
 
-
+if (isset($_POST['password_recovery'])) {
+	password_recovery($_POST['password_recovery']);
+}
 
 
 // ===== FUNCTIONS =====
+
+
+function password_recovery ($email) {
+	$user = get_user_by('email', $email);
+	$new_password = password_generator();
+	if ($user) {
+		$message = 'На указанный email отправлен временный пароль';
+		$Receiver = $user->data->user_email;
+		$Subject = "Восстановление пароля";
+		$Text = 'Ваш новый временный пароль: '.$new_password;
+		wp_update_user([
+			'ID' => $user->data->ID,
+			'user_pass' => $new_password,
+		]);
+	} else {
+		$message = 'Данные пользователя с таким email отсутствуют в базе';
+	}
+	include_once 'php_mail/index.php';
+	include_once 'layout/result_message.php';
+	// post_resset();
+}
+
+ function password_generator(){
+      $chars = 'abdefhiknrstyzABDEFGHKNQRSTYZ23456789';
+      $numChars = strlen($chars);
+      $string = '';
+      for ($i = 0; $i < 10; $i++) {
+        $string .= substr($chars, rand(1, $numChars) - 1, 1);
+      }
+      return $string;
+    }
 
 function order_update () {
 	$new_post_data = [
@@ -126,7 +159,6 @@ function  pagination_manager($arr) {
 	if ($last_order > $quantity) {
 		$last_order = $quantity;
 	}
-	echo '==='.$last_order;
 	$page = [];
 	for ($i=$first_order; $i < $last_order ; $i++) { 
 		array_push($page, $arr[$i]);
@@ -135,6 +167,21 @@ function  pagination_manager($arr) {
 		'page' => $page, 
 		'number_of_pages' => $number_of_pages
 	];
+}
+function first_page ($current_page) {
+	$page = $current_page-2; 
+	if ($page <= 0 ) {
+		$page = 1;
+	}; 
+	return $page;
+}
+
+function last_page ($current_page, $max_page) {
+	$page = $current_page+2; 
+	if ($page >= $max_page ) {
+		$page = $max_page;
+	}; 
+	return $page;
 }
 
 function orders_filter($arr) {

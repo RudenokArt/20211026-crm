@@ -11,6 +11,13 @@
 				<div class="input-group">
 					<select class="form-select" name="user_role" >
 						<option 
+						<?php if ($updating_user->roles[0]=='administrator'): ?>
+							selected
+						<?php endif ?>
+						value="administrator">
+						<?php echo $users_roles['administrator'] ?>
+					</option>
+						<option 
 						<?php if ($updating_user->roles[0]=='editor'): ?>
 							selected
 						<?php endif ?>
