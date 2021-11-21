@@ -120,7 +120,10 @@ function order_fields ($order) {
 }
 
 function orders_list () {
-	$arr = get_posts(['category' => get_cat_ID('order')]);
+	$arr = get_posts([
+		'category' => get_cat_ID('order'),
+		'numberposts' => 500000,
+	]);
 	$arr = orders_filter($arr);
 	$arr = pagination_manager($arr);
 	return $arr;
@@ -217,6 +220,11 @@ function orders_filter($arr) {
 				if (
 					mb_stripos(order_fields($value->ID)['customer_adress'],
 						trim($_POST['customer_adress']))===false) {
+					unset($arr[$key]);
+				}
+			}
+			if (!empty($_POST['order_status_filter'])) {
+				if (order_fields($value->ID)['order_status'] != $_POST['order_status_filter']) {
 					unset($arr[$key]);
 				}
 			}

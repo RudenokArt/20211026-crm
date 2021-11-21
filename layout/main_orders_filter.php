@@ -27,7 +27,7 @@
 	</div>
 	<div class="row justify-content-center pb-2">
 		<div  class="col-lg-4 col-md-6 col-sm-12">
-			<select class="form-select" name="order_status">
+			<select class="form-select" name="order_status_filter">
 				<option value="">Статус (не выбран)</option>
 				<?php foreach ($order_status as $key => $value): ?>
 					<option value="<?php echo $key; ?>">
