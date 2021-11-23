@@ -6,7 +6,7 @@
 		});
 	} );
 
-	$('input[name="customer_phone"]').mask('(999) 999-9999');
+	$('input[name="customer_phone"]').mask('+7 (999) 999-9999');
 	$('input[name="order_date"]').mask('99-99-9999');
 
 </script>
