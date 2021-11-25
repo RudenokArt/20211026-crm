@@ -14,3 +14,13 @@ div, button{
 .pagination_manager{
   width: 250px !important;
 }
+
+table.order_print {
+  margin: auto;
+  /*width: 100%;*/
+}
+.order_print th,
+ .order_print th {
+  padding: 10px;
+}
+

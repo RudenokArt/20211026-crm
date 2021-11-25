@@ -115,6 +115,10 @@
 				class="btn btn-outline-danger">
 				<i class="fa fa-trash-o" aria-hidden="true"></i>
 			</a>
+      <a href="<?php echo get_permalink($value->ID); ?>" 
+        class="btn btn-outline-success" target="_blank">
+        <i class="fa fa-print" aria-hidden="true"></i>
+      </a>
 		</div>
 	</div>
 <?php endforeach ?>
