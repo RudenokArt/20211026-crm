@@ -15,7 +15,7 @@ $current_order = post_data(get_post()->ID);
             <?php echo $current_order['meta']['order_date'][0]; ?>
           </th>
           <th>
-            <?php echo $adress_arr[$current_order['data']->post_name]; ?>
+            <?php echo $adress_arr[$current_order['data']->post_title]; ?>
           </th>
         </tr>
         <tr>
