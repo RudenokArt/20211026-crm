@@ -16,21 +16,26 @@
 					<div class="row justify-content-around">
 						<div class="col-3">
 							<form action="" method="post">
-								<button name="<?php echo $_GET['entity'];?>_delete" 
-								value="<?php echo $_GET['id'] ?>" 
-									class="btn btn-outline-success" title="Удалить">
-									<i class="fa fa-check" aria-hidden="true"></i>
-								</button>
-							</form>
-						</div><div class="col-3">
-							<a href="?main_page=<?php echo $_GET['entity'];?>" 
-								class="btn btn-outline-danger">
-								<i class="fa fa-times" aria-hidden="true"></i>
-							</a>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+								<button 
+                <?php if (isset($_GET['order_meta'])): ?>
+                  name="<?php echo $_GET['order_meta'];?>_delete"
+                <?php else: ?>
+                  name="<?php echo $_GET['entity'];?>_delete"
+                <?php endif ?> 
+                value="<?php echo $_GET['id'] ?>" 
+                class="btn btn-outline-success" title="Удалить">
+                <i class="fa fa-check" aria-hidden="true"></i>
+              </button>
+            </form>
+          </div><div class="col-3">
+           <a href="?main_page=<?php echo $_GET['entity'];?>" 
+            class="btn btn-outline-danger">
+            <i class="fa fa-times" aria-hidden="true"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
 </div>

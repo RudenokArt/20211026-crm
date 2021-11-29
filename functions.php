@@ -30,6 +30,10 @@ if (isset($_POST['orders_delete'])) {
 	order_delete();
 }
 
+if (isset($_POST['file_delete'])) {
+  file_delete();
+}
+
 if (isset($_POST['order_update'])) {
 	order_update ();
 }
@@ -41,6 +45,20 @@ if (isset($_POST['password_recovery'])) {
 
 // ===== FUNCTIONS =====
 
+function file_delete () {
+  unlink($_SERVER['DOCUMENT_ROOT'].post_data(
+    $_POST['file_delete'])['meta']['file'][0]);
+  $new_post_data = [
+    'ID' => $_POST['file_delete'],
+    'meta_input' => [
+      'file' => '',
+    ],
+  ];
+  wp_update_post( wp_slash($new_post_data) );
+  $message = 'Файл удален!';
+  include_once 'layout/result_message.php';
+  post_resset('?main_page=orders');
+}
 
 function password_recovery ($email) {
 	$user = get_user_by('email', $email);
@@ -62,37 +80,37 @@ function password_recovery ($email) {
 	// post_resset();
 }
 
- function password_generator(){
-      $chars = 'abdefhiknrstyzABDEFGHKNQRSTYZ23456789';
-      $numChars = strlen($chars);
-      $string = '';
-      for ($i = 0; $i < 10; $i++) {
-        $string .= substr($chars, rand(1, $numChars) - 1, 1);
-      }
-      return $string;
-    }
+function password_generator(){
+  $chars = 'abdefhiknrstyzABDEFGHKNQRSTYZ23456789';
+  $numChars = strlen($chars);
+  $string = '';
+  for ($i = 0; $i < 10; $i++) {
+    $string .= substr($chars, rand(1, $numChars) - 1, 1);
+  }
+  return $string;
+}
 
 function order_update () {
-	$new_post_data = [
-		'ID' => $_POST['order_update'],
-		'post_title'    => $_POST['company_adress'],
-		'post_status'   => 'publish',
-		'post_content' => $_POST['comment'],
-		'meta_input'  => [ 
-			'order_date'=>$_POST['order_date'],
-			'customer_phone'=>$_POST['customer_phone'],
-			'customer_adress'=>$_POST['customer_adress'],
-			'order_status'=>$_POST['order_status'],
-		],
-	];
-	wp_update_post( wp_slash($new_post_data) );
-	if ($_FILES['upload_file']['size']>0) {
-		unlink($_SERVER['DOCUMENT_ROOT'].$_POST['unliking_file']);
-	}
-	user_file_upload ($_POST['order_update']);
-	$message = 'Изменения внесены в базу данных!';
-	include_once 'layout/result_message.php';
-	post_resset('?main_page=orders');
+  if ($_FILES['upload_file']['size']>0) {
+    unlink($_SERVER['DOCUMENT_ROOT'].$_POST['unliking_file']);
+  }
+  $new_post_data = [
+    'ID' => $_POST['order_update'],
+    'post_title'    => $_POST['company_adress'],
+    'post_status'   => 'publish',
+    'post_content' => $_POST['comment'],
+    'meta_input'  => [ 
+     'order_date'=>$_POST['order_date'],
+     'customer_phone'=>$_POST['customer_phone'],
+     'customer_adress'=>$_POST['customer_adress'],
+     'order_status'=>$_POST['order_status'],
+   ],
+ ];
+ wp_update_post( wp_slash($new_post_data) );
+ user_file_upload ($_POST['order_update']);
+ $message = 'Изменения внесены в базу данных!';
+ include_once 'layout/result_message.php';
+ post_resset('?main_page=orders');
 }
 
 function post_data ($order_id) {
@@ -103,12 +121,12 @@ function post_data ($order_id) {
 }
 
 function order_delete () {
-	wp_delete_post($_POST['orders_delete']);
-	unlink($_SERVER['DOCUMENT_ROOT'].post_data(
-		$_POST['orders_delete'])['meta']['file'][0]);
-	$message = 'Заказ удален из базы дынных!';
-	include_once 'layout/result_message.php';
-	post_resset('?main_page=orders');
+  unlink($_SERVER['DOCUMENT_ROOT'].post_data(
+    $_POST['orders_delete'])['meta']['file'][0]);
+  wp_delete_post($_POST['orders_delete']);
+  $message = 'Заказ удален из базы дынных!';
+  include_once 'layout/result_message.php';
+  post_resset('?main_page=orders');
 }
 
 function order_fields ($order) {
