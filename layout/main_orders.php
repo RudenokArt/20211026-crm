@@ -84,7 +84,8 @@
 
 <?php foreach ($page_data['page'] as $key => $value): ?>
 	<?php $order_meta_fields = order_fields($value->ID) ?>
-	<div class="row p-2" style="background-color: <?php echo $order_colors[$order_meta_fields['order_status']]; ?>;">
+	<div class="row p-2 border" 
+  style="background-color: <?php echo $order_colors[$order_meta_fields['order_status']]; ?>;">
 		<div class="col-lg-3 col-md-6 col-sm-12">
 			<?php echo get_user_by('ID',$value->post_author)->data->display_name;?>
 			<br>

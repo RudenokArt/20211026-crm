@@ -276,7 +276,7 @@ function user_file_upload ($post_id) {
 		$name = $_FILES['upload_file']['name'];
 		$link1 = '/crm/wp-content/uploads/order_'.$post_id.'_'.$name;
 		$link = '/wp-content/uploads/order_'.$post_id.'_'.$name;
-		if ($link1) {		$link = $link1;	}
+		if (array_pop(explode('/', $_SERVER['DOCUMENT_ROOT'])) !='crm') {$link = $link1;}
 		move_uploaded_file($file, $_SERVER['DOCUMENT_ROOT'].$link);
 	// метаполе ссылка на файл
 		$new_post_data = [
