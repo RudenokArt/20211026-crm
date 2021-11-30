@@ -92,7 +92,7 @@
     <?php echo $adress_arr[$value->post_title]; ?>
   </div>
   <div class="col p-2">
-    Источник: <br>
+    Ответственный: <br>
     <?php echo get_user_by('ID',$value->post_author)->data->display_name;?>
   </div>
   <div class="col p-2">
