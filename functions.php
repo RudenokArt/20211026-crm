@@ -380,7 +380,7 @@ function post_resset ($page='') {	?>
 }
 
 function admin_only () {?>
-	<?php if ($current_user->ID==1): ?>
+	<?php if (wp_get_current_user()->ID!=1): ?>
 		<?php $message = 'Этот раздел доступен только для администратора!' ?>
 		<?php include_once 'layout/result_message.php'; ?>
 		<?php exit(); ?>
