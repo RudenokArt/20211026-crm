@@ -17,11 +17,13 @@ div, button{
 
 table.order_print {
   margin: auto;
+  border-collapse: collapse;
   /*width: 100%;*/
 }
 .order_print th,
- .order_print th {
+ .order_print td {
   padding: 10px;
+  border: 1px solid grey;
 }
 
 
